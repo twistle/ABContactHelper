@@ -134,6 +134,12 @@
 
 #pragma mark Searches
 
++ (NSArray *) contactsMatchingPredicate: (NSPredicate *) pred
+{
+    NSArray *contacts = [ABContactsHelper contacts];
+    return [contacts filteredArrayUsingPredicate:pred];
+}
+
 + (NSArray *) contactsMatchingName: (NSString *) fname
 {
     NSPredicate *pred;
@@ -161,12 +167,20 @@
     return [contacts filteredArrayUsingPredicate:pred];
 }
 
++ (NSArray *) contactsMatchingEmail: (NSString *) email
+{
+    NSPredicate *pred;
+    NSArray *contacts = [ABContactsHelper contacts];
+    pred = [NSPredicate predicateWithFormat:@"emailaddresses contains[cd] %@", email];
+    return [contacts filteredArrayUsingPredicate:pred];
+}
+
 // Thanks Frederic Bronner
 + (NSArray *) contactsMatchingOrganization: (NSString *) organization
 {
 	NSPredicate *pred;
 	NSArray *contacts = [ABContactsHelper contacts];
-	pred = [NSPredicate predicateWithFormat:@"organization contains[cd] %@", organization];
+	pred = [NSPredicate predicateWithFormat:@"organization beginswith[cd] %@", organization];
 	return [contacts filteredArrayUsingPredicate:pred];
 }
 
