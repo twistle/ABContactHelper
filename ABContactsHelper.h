@@ -34,9 +34,11 @@
 + (BOOL) addGroup: (ABGroup *) aGroup withError: (NSError **) error;
 
 // Find contacts
++ (NSArray *) contactsMatchingPredicate: (NSPredicate *) pred;
 + (NSArray *) contactsMatchingName: (NSString *) fname;
 + (NSArray *) contactsMatchingName: (NSString *) fname andName: (NSString *) lname;
 + (NSArray *) contactsMatchingPhone: (NSString *) number;
++ (NSArray *) contactsMatchingEmail: (NSString *) email;
 + (NSArray *) contactsMatchingOrganization: (NSString *) organization;
 
 // Find groups
