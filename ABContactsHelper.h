@@ -18,6 +18,9 @@
 
 // Address Book Contacts and Groups
 + (NSArray *) contacts; // people
++ (NSArray *) currentContacts; // people with most current address book info
++ (NSArray *) contactsWithAddressBook:(ABAddressBookRef) addressBook;
+
 + (NSArray *) groups; // groups
 
 // Counting
