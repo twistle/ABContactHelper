@@ -23,7 +23,16 @@
 
 + (NSArray *) contacts
 {
-    ABAddressBookRef addressBook = [ABStandin addressBook];
+    return [ABContactsHelper contactsWithAddressBook:[ABStandin addressBook]];
+}
+
++ (NSArray *) currentContacts
+{
+    return [ABContactsHelper contactsWithAddressBook:[ABStandin currentAddressBook]];
+}
+
++ (NSArray *) contactsWithAddressBook:(ABAddressBookRef) addressBook
+{
     NSArray *thePeople = (__bridge_transfer NSArray *)ABAddressBookCopyArrayOfAllPeople(addressBook);
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:thePeople.count];
     for (id person in thePeople)
@@ -136,14 +145,14 @@
 
 + (NSArray *) contactsMatchingPredicate: (NSPredicate *) pred
 {
-    NSArray *contacts = [ABContactsHelper contacts];
+    NSArray *contacts = [ABContactsHelper currentContacts];
     return [contacts filteredArrayUsingPredicate:pred];
 }
 
 + (NSArray *) contactsMatchingName: (NSString *) fname
 {
     NSPredicate *pred;
-    NSArray *contacts = [ABContactsHelper contacts];
+    NSArray *contacts = [ABContactsHelper currentContacts];
     pred = [NSPredicate predicateWithFormat:@"firstname beginswith[cd] %@ OR lastname beginswith[cd] %@ OR nickname beginswith[cd] %@ OR middlename beginswith[cd] %@", fname, fname, fname, fname];
     return [contacts filteredArrayUsingPredicate:pred];
 }
@@ -151,7 +160,7 @@
 + (NSArray *) contactsMatchingName: (NSString *) fname andName: (NSString *) lname
 {
     NSPredicate *pred;
-    NSArray *contacts = [ABContactsHelper contacts];
+    NSArray *contacts = [ABContactsHelper currentContacts];
     pred = [NSPredicate predicateWithFormat:@"firstname beginswith[cd] %@ OR lastname beginswith[cd] %@ OR nickname beginswith[cd] %@ OR middlename beginswith[cd] %@", fname, fname, fname, fname];
     contacts = [contacts filteredArrayUsingPredicate:pred];
     pred = [NSPredicate predicateWithFormat:@"firstname beginswith[cd] %@ OR lastname beginswith[cd] %@ OR nickname beginswith[cd] %@ OR middlename beginswith[cd] %@", lname, lname, lname, lname];
@@ -162,7 +171,7 @@
 + (NSArray *) contactsMatchingPhone: (NSString *) number
 {
     NSPredicate *pred;
-    NSArray *contacts = [ABContactsHelper contacts];
+    NSArray *contacts = [ABContactsHelper currentContacts];
     pred = [NSPredicate predicateWithFormat:@"phonenumbers contains[cd] %@", number];
     return [contacts filteredArrayUsingPredicate:pred];
 }
@@ -170,7 +179,7 @@
 + (NSArray *) contactsMatchingEmail: (NSString *) email
 {
     NSPredicate *pred;
-    NSArray *contacts = [ABContactsHelper contacts];
+    NSArray *contacts = [ABContactsHelper currentContacts];
     pred = [NSPredicate predicateWithFormat:@"emailaddresses contains[cd] %@", email];
     return [contacts filteredArrayUsingPredicate:pred];
 }
@@ -179,7 +188,7 @@
 + (NSArray *) contactsMatchingOrganization: (NSString *) organization
 {
 	NSPredicate *pred;
-	NSArray *contacts = [ABContactsHelper contacts];
+	NSArray *contacts = [ABContactsHelper currentContacts];
 	pred = [NSPredicate predicateWithFormat:@"organization beginswith[cd] %@", organization];
 	return [contacts filteredArrayUsingPredicate:pred];
 }
